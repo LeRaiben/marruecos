@@ -27,18 +27,19 @@
     --error-bg: #FDECEA;
     --ok: #1F7A4D;
     --ok-bg: #E6F4EC;
+    --off-bg: #E1E7EC;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #0E1820; --surface: #16252F; --ink: #E8EFF5; --muted: #9DB0C0;
       --blue: #7DB9EA; --on-blue: #0B1620; --band: #123A5C; --line: #2C4252;
-      --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F;
+      --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F; --off-bg: #1F2E39;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0E1820; --surface: #16252F; --ink: #E8EFF5; --muted: #9DB0C0;
     --blue: #7DB9EA; --on-blue: #0B1620; --band: #123A5C; --line: #2C4252;
-    --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F;
+    --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F; --off-bg: #1F2E39;
   }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   *, *::before, *::after { box-sizing: border-box; }
@@ -74,6 +75,8 @@
     border: 2px solid var(--blue); border-radius: 12px; cursor: pointer;
   }
   .slot[aria-pressed="true"] { background: var(--blue); color: var(--on-blue); box-shadow: inset 0 -4px 0 var(--star); }
+  .slot:disabled, .slot.taken { background: var(--off-bg); color: var(--muted); border: 2px dashed var(--line); box-shadow: none; cursor: not-allowed; }
+  .slot .tag { display: block; font-size: 0.85rem; font-weight: 400; }
 
   form { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px; }
   .who { margin: 0 0 18px; font-weight: 700; color: var(--blue); }
@@ -122,7 +125,7 @@
 
   <section id="slotSection" aria-labelledby="h-puesto">
     <h2 id="h-puesto">Elige tu puesto</h2>
-    <p class="hint">Cada equipo tiene dos integrantes. Pulsa el tuyo.</p>
+    <p class="hint">Cada equipo tiene dos integrantes. Pulsa el tuyo. Los puestos en gris ya están ocupados.</p>
     <p class="alert" id="slotMsg" role="alert"></p>
     <div id="slots"></div>
   </section>
@@ -186,6 +189,10 @@
   var MEMBER = { 1: "Primer integrante", 2: "Segundo integrante" };
   var slot = null;
   var sending = false;
+  var occupied = {};
+  var lastSig = "";
+  var polling = false;
+  var pollTimer = null;
 
   /* ---------- Rejilla de puestos ---------- */
   var grid = $("#slots");
@@ -222,6 +229,7 @@
   }
 
   function choose(t, m) {
+    if (occupied[t + "-" + m]) return;
     slot = { team: t, member: m };
     document.querySelectorAll(".slot").forEach(function (b) {
       b.setAttribute("aria-pressed", String(+b.dataset.team === t && +b.dataset.member === m));
@@ -332,14 +340,19 @@
         $("#form").reset();
         smoothTo($("#okSection"));
         sending = true; // evita reenvíos
+        clearInterval(pollTimer);
         return;
       }
       finish();
       if (res.status === 409) {
         $("#formSection").hidden = true;
+        occupied[slot.team + "-" + slot.member] = true;
+        lastSig = "";
         clearSlotSelection();
         slot = null;
-        $("#slotMsg").textContent = "Ese puesto ya está ocupado por otra persona. Elige el tuyo o díselo a quien te pasó el enlace.";
+        paintSlots();
+        refreshOccupied();
+        $("#slotMsg").textContent = "Ese puesto ya está ocupado por otra persona. Elige otro que esté libre.";
         smoothTo($("#slotSection"));
       } else if (res.status === 400) {
         $("#formMsg").textContent = "Alguno de los datos no es válido. Revísalos e inténtalo de nuevo.";
@@ -351,6 +364,59 @@
       $("#formMsg").textContent = "No hay conexión con el servidor. Comprueba tu internet e inténtalo otra vez.";
     });
   });
+
+  /* ---------- Puestos ocupados (se actualiza solo) ---------- */
+  function paintSlots() {
+    var sig = Object.keys(occupied).sort().join(",");
+    if (sig === lastSig) return;
+    lastSig = sig;
+    document.querySelectorAll(".slot").forEach(function (b) {
+      var taken = !!occupied[b.dataset.team + "-" + b.dataset.member];
+      b.disabled = taken;
+      b.classList.toggle("taken", taken);
+      b.textContent = MEMBER[b.dataset.member];
+      if (taken) {
+        var tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "Ocupado";
+        b.appendChild(tag);
+      }
+    });
+  }
+
+  function checkSelected() {
+    if (!slot || sending) return;
+    if (occupied[slot.team + "-" + slot.member]) {
+      $("#formSection").hidden = true;
+      clearSlotSelection();
+      slot = null;
+      $("#slotMsg").textContent = "Otra persona acaba de ocupar ese puesto. Elige otro que esté libre.";
+      smoothTo($("#slotSection"));
+    }
+  }
+
+  function refreshOccupied() {
+    if (polling || !$("#okSection").hidden) return Promise.resolve();
+    polling = true;
+    return fetch(SUPABASE_URL + "/rest/v1/inscripciones?select=equipo,participante", {
+      headers: { "apikey": SUPABASE_KEY, "Accept": "application/json" },
+      cache: "no-store"
+    }).then(function (res) {
+      if (!res.ok) throw new Error("http " + res.status);
+      return res.json();
+    }).then(function (rows) {
+      var next = {};
+      rows.forEach(function (r) { next[r.equipo + "-" + r.participante] = true; });
+      occupied = next;
+      paintSlots();
+      checkSelected();
+    }).catch(function () { /* si falla, los botones siguen activos y el servidor protege igualmente */ })
+      .then(function () { polling = false; });
+  }
+
+  refreshOccupied();
+  pollTimer = setInterval(function () { if (!document.hidden) refreshOccupied(); }, 5000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) refreshOccupied(); });
 })();
 </script>
 </body>
