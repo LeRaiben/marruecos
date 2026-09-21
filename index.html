@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>MARRUECOS REKKAN IRIKI 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --bg: #F2F6F9;
+    --surface: #FFFFFF;
+    --ink: #14212B;
+    --muted: #4F6273;
+    --blue: #1D5A8E;
+    --on-blue: #FFFFFF;
+    --band: #17476F;
+    --line: #BFCFDC;
+    --focus: #0B3A66;
+    --star: #E3A82B;
+    --error: #B3261E;
+    --error-bg: #FDECEA;
+    --ok: #1F7A4D;
+    --ok-bg: #E6F4EC;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1820; --surface: #16252F; --ink: #E8EFF5; --muted: #9DB0C0;
+      --blue: #7DB9EA; --on-blue: #0B1620; --band: #123A5C; --line: #2C4252;
+      --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1820; --surface: #16252F; --ink: #E8EFF5; --muted: #9DB0C0;
+    --blue: #7DB9EA; --on-blue: #0B1620; --band: #123A5C; --line: #2C4252;
+    --focus: #FFD166; --error: #FF9C94; --error-bg: #3A1A18; --ok: #7FD6A5; --ok-bg: #12301F;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 18px; line-height: 1.5;
+  }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif; line-height: 1.15; margin: 0; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  header {
+    background-color: var(--band);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%23E3A82B' stroke-opacity='.28' stroke-width='1.5'%3E%3Crect x='18' y='18' width='36' height='36'/%3E%3Crect x='18' y='18' width='36' height='36' transform='rotate(45 36 36)'/%3E%3C/g%3E%3C/svg%3E");
+    color: #FFFFFF; padding: 36px 20px 30px;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header h1 { font-size: clamp(1.8rem, 7.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+  header p { margin: 12px 0 0; font-size: 1.05rem; max-width: 34em; color: #E4EEF7; }
+
+  main { padding: 26px 20px 48px; }
+  section { margin-bottom: 34px; }
+  h2 { font-size: 1.45rem; font-weight: 700; margin-bottom: 4px; }
+  .hint { margin: 0 0 16px; color: var(--muted); font-size: 1rem; }
+
+  .team { display: grid; grid-template-columns: 5.6rem 1fr; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+  .team:last-child { border-bottom: 1px solid var(--line); }
+  .team h3 { font-size: 1.15rem; font-weight: 700; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .slot {
+    min-height: 60px; padding: 8px 10px; font: inherit; font-weight: 700; font-size: 1rem; line-height: 1.2;
+    background: var(--surface); color: var(--blue);
+    border: 2px solid var(--blue); border-radius: 12px; cursor: pointer;
+  }
+  .slot[aria-pressed="true"] { background: var(--blue); color: var(--on-blue); box-shadow: inset 0 -4px 0 var(--star); }
+
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 18px; }
+  .who { margin: 0 0 18px; font-weight: 700; color: var(--blue); }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-weight: 700; margin-bottom: 6px; }
+  .sub { display: block; font-weight: 400; color: var(--muted); font-size: 0.95rem; }
+  input[type="text"], input[type="date"] {
+    width: 100%; min-height: 54px; padding: 10px 14px; font: inherit; color: var(--ink);
+    background: var(--bg); border: 2px solid var(--line); border-radius: 10px;
+  }
+  input[aria-invalid="true"] { border-color: var(--error); }
+  .err { color: var(--error); font-size: 0.98rem; margin: 6px 0 0; }
+  .err:empty { display: none; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 56px; padding: 12px 22px; font: inherit; font-weight: 700; cursor: pointer;
+    border-radius: 12px; border: 2px solid var(--blue); background: var(--blue); color: var(--on-blue);
+  }
+  .btn.block { width: 100%; }
+  .btn[disabled] { opacity: .65; cursor: progress; }
+
+  .alert { padding: 12px 14px; border-radius: 10px; margin: 0 0 16px; font-size: 1rem; background: var(--error-bg); color: var(--error); border: 1px solid var(--error); }
+  .alert:empty { display: none; }
+
+  .success { background: var(--ok-bg); border: 1px solid var(--ok); border-radius: 16px; padding: 24px 20px; }
+  .success h2 { color: var(--ok); margin-bottom: 10px; }
+  .success p { margin: 0 0 10px; }
+  .privacy { color: var(--muted); font-size: 0.95rem; margin-top: 16px; }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 420px) { .team { grid-template-columns: 1fr; gap: 6px; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>MARRUECOS REKKAN IRIKI 2026</h1>
+    <p>Elige tu puesto y rellena tus datos. Solo tardas un par de minutos y no tienes que enviar nada más.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <noscript><p class="alert" style="display:block">Esta página necesita JavaScript para funcionar.</p></noscript>
+
+  <section id="slotSection" aria-labelledby="h-puesto">
+    <h2 id="h-puesto">Elige tu puesto</h2>
+    <p class="hint">Cada equipo tiene dos integrantes. Pulsa el tuyo.</p>
+    <p class="alert" id="slotMsg" role="alert"></p>
+    <div id="slots"></div>
+  </section>
+
+  <section id="formSection" hidden aria-labelledby="h-datos">
+    <h2 id="h-datos">Tus datos</h2>
+    <p class="who" id="who"></p>
+    <form id="form" novalidate autocomplete="off">
+      <p class="alert" id="formMsg" role="alert"></p>
+      <div class="field">
+        <label for="nombre">Nombre completo <span class="sub">Tal como aparece en el pasaporte</span></label>
+        <input type="text" id="nombre" name="nombre" autocomplete="off" autocapitalize="words" aria-describedby="e-nombre">
+        <p class="err" id="e-nombre" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="nacimiento">Fecha de nacimiento</label>
+        <input type="date" id="nacimiento" name="nacimiento" aria-describedby="e-nacimiento">
+        <p class="err" id="e-nacimiento" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="pasaporte">Número de pasaporte</label>
+        <input type="text" id="pasaporte" name="pasaporte" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="e-pasaporte">
+        <p class="err" id="e-pasaporte" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="caducidad">Fecha de caducidad del pasaporte</label>
+        <input type="date" id="caducidad" name="caducidad" aria-describedby="e-caducidad">
+        <p class="err" id="e-caducidad" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="vehiculo">Vehículo <span class="sub">Marca y modelo, por ejemplo Renault Clio</span></label>
+        <input type="text" id="vehiculo" name="vehiculo" autocomplete="off" autocapitalize="words" aria-describedby="e-vehiculo">
+        <p class="err" id="e-vehiculo" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="matricula">Matrícula del vehículo</label>
+        <input type="text" id="matricula" name="matricula" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="e-matricula">
+        <p class="err" id="e-matricula" role="alert"></p>
+      </div>
+      <button type="submit" class="btn block" id="send">Enviar mis datos</button>
+    </form>
+    <p class="privacy">Tus datos se guardan de forma privada. Solo los ve quien organiza el viaje y se usan únicamente para gestionarlo.</p>
+  </section>
+
+  <section id="okSection" hidden aria-labelledby="h-ok">
+    <div class="success" role="status">
+      <h2 id="h-ok">Datos recibidos</h2>
+      <p id="okWho"></p>
+      <p>Ya no tienes que hacer nada más. Si te has equivocado en algún dato, díselo a quien te pasó este enlace.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var SUPABASE_URL = "https://ekbqfrsiswmpwohegjsq.supabase.co";
+  var SUPABASE_KEY = "sb_publishable_iJpgIZUrf-jesiNig6pPMA_eVCpQnJ0"; // clave pública: solo permite enviar (insert)
+
+  var $ = function (s) { return document.querySelector(s); };
+  var MEMBER = { 1: "Primer integrante", 2: "Segundo integrante" };
+  var slot = null;
+  var sending = false;
+
+  /* ---------- Rejilla de puestos ---------- */
+  var grid = $("#slots");
+  [1, 2, 3, 4].forEach(function (t) {
+    var row = document.createElement("div");
+    row.className = "team";
+    var h = document.createElement("h3");
+    h.textContent = "Equipo " + t;
+    var pair = document.createElement("div");
+    pair.className = "pair";
+    [1, 2].forEach(function (m) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "slot";
+      b.dataset.team = t;
+      b.dataset.member = m;
+      b.setAttribute("aria-pressed", "false");
+      b.textContent = MEMBER[m];
+      b.addEventListener("click", function () { choose(t, m); });
+      pair.appendChild(b);
+    });
+    row.appendChild(h);
+    row.appendChild(pair);
+    grid.appendChild(row);
+  });
+
+  function smoothTo(el) {
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
+
+  function clearSlotSelection() {
+    document.querySelectorAll(".slot").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+  }
+
+  function choose(t, m) {
+    slot = { team: t, member: m };
+    document.querySelectorAll(".slot").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(+b.dataset.team === t && +b.dataset.member === m));
+    });
+    $("#slotMsg").textContent = "";
+    $("#formMsg").textContent = "";
+    $("#who").textContent = "Equipo " + t + ", " + MEMBER[m].toLowerCase();
+    $("#formSection").hidden = false;
+    smoothTo($("#formSection"));
+    setTimeout(function () { $("#nombre").focus({ preventScroll: true }); }, 250);
+  }
+
+  /* ---------- Límites de fecha ---------- */
+  function isoLocal(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  (function () {
+    var t = new Date();
+    var tomorrow = new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1);
+    $("#caducidad").min = isoLocal(tomorrow);
+    $("#nacimiento").max = isoLocal(t);
+  })();
+
+  /* ---------- Validación ---------- */
+  function setErr(id, text) {
+    var input = $("#" + id);
+    $("#e-" + id).textContent = text || "";
+    if (text) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
+    return !text;
+  }
+
+  function parseISO(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    var p = iso.split("-").map(Number);
+    var d = new Date(p[0], p[1] - 1, p[2]);
+    if (d.getFullYear() !== p[0] || d.getMonth() !== p[1] - 1 || d.getDate() !== p[2]) return null;
+    return { y: p[0], d: d };
+  }
+  function validFuture(iso) {
+    var r = parseISO(iso); if (!r) return false;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    return r.d > today;
+  }
+  function validPast(iso) {
+    var r = parseISO(iso); if (!r) return false;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    return r.y >= 1900 && r.d < today;
+  }
+
+  /* ---------- Envío ---------- */
+  $("#form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!slot || sending) return;
+
+    var nombre = $("#nombre").value.replace(/\s+/g, " ").trim();
+    var nacimiento = $("#nacimiento").value;
+    var pasaporte = $("#pasaporte").value.replace(/\s+/g, "").toUpperCase();
+    var caducidad = $("#caducidad").value;
+    var vehiculo = $("#vehiculo").value.replace(/\s+/g, " ").trim();
+    var matricula = $("#matricula").value.replace(/\s+/g, " ").trim().toUpperCase();
+
+    var ok = true;
+    ok = setErr("nombre", (nombre.split(" ").length >= 2 && nombre.length >= 5 && nombre.length <= 120) ? "" : "Escribe tu nombre y apellidos completos.") && ok;
+    ok = setErr("nacimiento", validPast(nacimiento) ? "" : "Elige tu fecha de nacimiento.") && ok;
+    ok = setErr("pasaporte", /^[A-Z0-9]{6,12}$/.test(pasaporte) ? "" : "Escribe el número tal cual, solo letras y números (entre 6 y 12).") && ok;
+    ok = setErr("caducidad", validFuture(caducidad) ? "" : "Elige una fecha de caducidad válida y futura.") && ok;
+    ok = setErr("vehiculo", (vehiculo.length >= 2 && vehiculo.length <= 80) ? "" : "Escribe la marca y el modelo del vehículo.") && ok;
+    ok = setErr("matricula", (matricula.replace(/[\s-]/g, "").length >= 4 && matricula.length <= 20) ? "" : "Escribe la matrícula del vehículo.") && ok;
+    if (!ok) {
+      var first = document.querySelector('#form [aria-invalid="true"]');
+      if (first) first.focus();
+      return;
+    }
+
+    var payload = {
+      equipo: slot.team,
+      participante: slot.member,
+      nombre: nombre,
+      nacimiento: nacimiento,
+      pasaporte: pasaporte,
+      caducidad: caducidad,
+      vehiculo: vehiculo,
+      matricula: matricula
+    };
+
+    var btn = $("#send");
+    sending = true;
+    btn.disabled = true;
+    btn.textContent = "Enviando…";
+    $("#formMsg").textContent = "";
+
+    function finish() { sending = false; btn.disabled = false; btn.textContent = "Enviar mis datos"; }
+
+    fetch(SUPABASE_URL + "/rest/v1/inscripciones", {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (res.status === 201 || res.status === 200 || res.status === 204) {
+        $("#okWho").textContent = "Equipo " + slot.team + ", " + MEMBER[slot.member].toLowerCase() + ". Tus datos se han guardado correctamente.";
+        $("#slotSection").hidden = true;
+        $("#formSection").hidden = true;
+        $("#okSection").hidden = false;
+        $("#form").reset();
+        smoothTo($("#okSection"));
+        sending = true; // evita reenvíos
+        return;
+      }
+      finish();
+      if (res.status === 409) {
+        $("#formSection").hidden = true;
+        clearSlotSelection();
+        slot = null;
+        $("#slotMsg").textContent = "Ese puesto ya está ocupado por otra persona. Elige el tuyo o díselo a quien te pasó el enlace.";
+        smoothTo($("#slotSection"));
+      } else if (res.status === 400) {
+        $("#formMsg").textContent = "Alguno de los datos no es válido. Revísalos e inténtalo de nuevo.";
+      } else {
+        $("#formMsg").textContent = "No se han podido guardar los datos (error " + res.status + "). Inténtalo de nuevo en unos minutos.";
+      }
+    }).catch(function () {
+      finish();
+      $("#formMsg").textContent = "No hay conexión con el servidor. Comprueba tu internet e inténtalo otra vez.";
+    });
+  });
+})();
+</script>
+</body>
+</html>
